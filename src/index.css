@@ -1,0 +1,19 @@
+/* index.css */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap');
+
+/* Aplicamos la fuente Poppins globalmente */
+body {
+  font-family: 'Poppins', sans-serif;
+}
+
+/* Estilos de la barra de scroll */
+body {
+  scrollbar-width: thin;
+  scrollbar-color: #525252 #262626; 
+  background-color: #171717;
+}
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
