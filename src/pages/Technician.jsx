@@ -1,14 +1,11 @@
-import PropTypes from "prop-types";
+import { useContext } from "react";
+import UserContext from "../context/UserContext";
 
-export function TechnicianUI({user}) {
-  console.log("Solo los técnicos pueden entrar aquí!")
+export function TechnicianUI() {
+  const { user } = useContext(UserContext);
   return (
     <div>
       <h1>TECHNICIAN {user.name}</h1>
     </div>
   );
 }
-
-TechnicianUI.propTypes = {
-  user: PropTypes.object
-};

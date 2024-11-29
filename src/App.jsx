@@ -9,63 +9,49 @@ import { AppointmentUI } from "./pages/Appointment";
 import { TechnicianUI } from "./pages/Technician";
 import { NotFoundPageUI } from "./pages/NotFoundPage";
 import { ProfileUI } from "./pages/Profile";
-import { useState } from "react";
+import { useContext } from "react";
+
+import UserContext from "./context/UserContext";
 
 function App() {
-  const [user, setUser] = useState(null);
-
-  const login = () => {
-    setUser({
-      id: 1,
-      name: "Jhon",
-      permission: ["analize"],
-      roles: ["admin"],
-    });
-    console.log("Creando el usuario");
-  };
-
-  const logout = () => {
-    setUser(null);
-    console.log("Cerrando sesión, el usuario será eliminado");
-  };
+  const { user } = useContext(UserContext);
 
   return (
     <BrowserRouter>
       <main className="flex">
-        {user ? <Navbar user={user} logout={logout} /> : ""}
-
-        <section className="bg-neutral-900 text-neutral-300 w-full h-screen max-h-screen overflow-y-auto overflow-x-hidden">
+        {user && <Navbar />}
+        <section className="w-full h-screen max-h-screen overflow-x-hidden overflow-y-auto bg-neutral-900 text-neutral-300">
           <Routes>
             <Route
               index
               element={
-                !user ? <LoginUI login={login} /> : <WelcomeUI user={user} />
+                !user ? <LoginUI /> : <WelcomeUI />
               }
             />
             <Route
               path="/login"
               element={
-                !user ? <LoginUI login={login} /> : <WelcomeUI user={user} />
+                !user ? <LoginUI /> : <WelcomeUI />
               }
             />
 
-            <Route path="/logout" element={<LoginUI login={login} />} />
+            <Route path="/logout" element={<LoginUI />} />
 
             <Route element={<ProtectedRoute isAllowed={!!user} />}>
-              <Route path="/welcome" element={<WelcomeUI user={user} />} />
-              <Route path="/tickets" element={<TicketsUI user={user} />} />
-              <Route path="/calendar" element={<CalendarUI user={user} />} />
-              <Route path="/profile" element={<ProfileUI user={user} />} />
+              <Route path="/welcome" element={<WelcomeUI />} />
+              <Route path="/tickets" element={<TicketsUI />} />
+              <Route path="/calendar" element={<CalendarUI />} />
+              <Route path="/profile" element={<ProfileUI />} />
             </Route>
 
             <Route
               path="/appointment"
               element={
                 <ProtectedRoute
-                  isAllowed={!!user && user.permission.includes("tech")}
+                  isAllowed={!!user/*  && user.permission.includes("tech") */}
                   redirectTo="/welcome"
                 >
-                  <AppointmentUI user={user} />
+                  <AppointmentUI />
                 </ProtectedRoute>
               }
             />
@@ -73,10 +59,10 @@ function App() {
               path="/technician"
               element={
                 <ProtectedRoute
-                  isAllowed={!!user && user.roles.includes("admin")}
+                  isAllowed={!!user && user.role == "Admin"}
                   redirectTo="/welcome"
                 >
-                  <TechnicianUI user={user} />
+                  <TechnicianUI />
                 </ProtectedRoute>
               }
             />

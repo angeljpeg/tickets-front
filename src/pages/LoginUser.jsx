@@ -1,16 +1,18 @@
 import { useNavigate } from "react-router-dom";
-import PropTypes from "prop-types";
 import { HiWrenchScrewdriver } from "react-icons/hi2";
+import { useContext } from "react";
+import UserContext from "../context/UserContext";
 
-export function LoginUI({ login }) {
+export function LoginUI() {
   const navigate = useNavigate();
+  const { login } = useContext(UserContext);
   const handleLogin = () => {
     login();
     navigate("/welcome");
   };
   return (
-    <div className="flex items-center justify-center h-screen">
-      <div className="">
+    <div className="flex flex-col items-center justify-center h-screen">
+      <div className="flex flex-col items-center p-8 rounded-lg bg-neutral-950">
         <div className="flex items-center gap-4">
           <div className="gap-6 p-2 rounded-full bg-golden w-fit">
             <HiWrenchScrewdriver className="text-5xl text-black" />
@@ -24,24 +26,24 @@ export function LoginUI({ login }) {
         <div className="mt-4">
           <form className="flex flex-col">
             <div className="mb-2">
-              <p className="mb-2">Correo</p>
+              <p className="mb-2 text-lg">Correo</p>
               <input
-                className="hover:bg-neutral-800 transition-all duration-300 ease-in-out px-4 py-2 rounded-lg outline-none border-[1px] border-neutral-600 bg-neutral-900"
+                className="px-4 py-2 transition-all duration-300 ease-in-out rounded-lg outline-none hover:bg-neutral-700 bg-neutral-800"
                 type="text"
               />
             </div>
             <div className="mb-4">
-              <p className="mb-2">Contraseña</p>
+              <p className="mb-2 text-lg">Contraseña</p>
               <input
-                className="hover:bg-neutral-800 transition-all duration-300 ease-in-out p-4 py-2 rounded-lg outline-none border-[1px] border-neutral-600 bg-neutral-900"
+                className="p-4 py-2 transition-all duration-300 ease-in-out rounded-lg outline-none hover:bg-neutral-700 bg-neutral-800"
                 type="password"
               />
             </div>
             <button
               onClick={handleLogin}
-              className="relative self-center p-2 overflow-hidden rounded-lg bg-neutral-600 group"
+              className="relative self-center p-2 overflow-hidden rounded-lg bg-neutral-700 group"
             >
-              <span className="relative z-10 font-medium transition-all duration-300 group-hover:text-neutral-700">
+              <span className="relative z-10 font-medium transition-all duration-300 group-hover:text-black">
                 Ingresar
               </span>
               <span className="absolute inset-0 h-full transition-all duration-300 origin-center transform scale-x-0 bg-golden group-hover:scale-x-100 group-hover:w-full"></span>
@@ -52,7 +54,3 @@ export function LoginUI({ login }) {
     </div>
   );
 }
-
-LoginUI.propTypes = {
-  login: PropTypes.func,
-};
