@@ -1,38 +1,43 @@
 // src/context/UserProvider.jsx
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import userContext from "./UserContext"; // Importar el contexto
 import PropTypes from "prop-types";
-import { tickets } from "../components/data/ticketData";
+
+// Constante para la clave en localStorage
+const USER_STORAGE_KEY = "app_user";
 
 export default function UserProvider({ children }) {
-  //Estado de los datos de usuario
-  const [user, setUser] = useState(null);
+  // Estado inicial: verificar si hay un usuario en localStorage
+  const [user, setUser] = useState(() => {
+    const storedUser = localStorage.getItem(USER_STORAGE_KEY);
+    return storedUser ? JSON.parse(storedUser) : null;
+  });
 
-  //Estado del arreglo de tickets
-  const [completaTickets, setCompletaTickets] = useState([...tickets]);
-
-  //Estado del modal
+  // Estado del modal
   const [informationModal, setInformationModal] = useState({
     mostrar: false,
     title: "",
-    id: -1
+    id: -1,
   });
 
-  const login = () => {
-    setUser({
-      id: 2,
-      name: "Pirita",
-      lastName: "Dream",
-      email: "pirita@gmail.com",
-      role: "admin",
-    });
-    console.log("Creando el usuario");
+  // Guardar usuario en localStorage al hacer login
+  const login = (loggedUser) => {
+    setUser(loggedUser);
+    localStorage.setItem(USER_STORAGE_KEY, JSON.stringify(loggedUser));
   };
 
+  // Limpiar usuario de localStorage al hacer logout
   const logout = () => {
     setUser(null);
-    console.log("Cerrando sesión, el usuario será eliminado");
+    localStorage.removeItem(USER_STORAGE_KEY);
   };
+
+  // Verificar si `user` cambia y sincronizar con `localStorage` (opcional)
+  useEffect(() => {
+    if (user) {
+      localStorage.setItem(USER_STORAGE_KEY, JSON.stringify(user));
+    }
+  }, [user]);
 
   return (
     <userContext.Provider
@@ -40,8 +45,6 @@ export default function UserProvider({ children }) {
         user,
         login,
         logout,
-        completaTickets,
-        setCompletaTickets,
         informationModal,
         setInformationModal,
       }}
